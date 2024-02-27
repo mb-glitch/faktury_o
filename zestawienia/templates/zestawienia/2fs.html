@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}{{ platnik.nazwa }} 2fs{% endblock %}
+
+{% block content %}
+
+
+<h2>Biglo Diagnostyka Laboratoryjna Sp. z o.o.<br>
+Sumarycznie badania płatnika<br>
+okres od {{platnik.data_start|date:"SHORT_DATETIME_FORMAT"}} do {{platnik.data_koniec|date:"SHORT_DATETIME_FORMAT"}}</h2>
+
+<h3>{{ platnik.nazwa }}</h3>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th style="width: 70%">Badania</th>
+      <th class="text-right" style="width: 10%">Ilość</th>
+      <th class="text-right" style="width: 10%">Cena</th>
+      <th class="text-right" style="width: 10%">Wartość</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for badanie in platnik.badania %}
+<tr>
+  <td>{{ badanie.nazwa_badania }}</td>
+  <td class="text-right">{{ badanie.ilosc }}</td>
+  <td class="text-right">{{ badanie.cena|floatformat:2 }}</td>
+  <td class="text-right">{{ badanie.wartosc|floatformat:2 }}</td>
+  </tr>
+{% endfor %}
+
+<tr>
+  <td class="text-right"><strong>Razem płatnik: </strong></td>
+  <td class="text-right"><strong>{{ platnik.ilosc }}</strong></td>
+  <td class="text-right"></td>
+  <td class="text-right"><strong>{{ platnik.wartosc|floatformat:2 }}</strong></td>
+  </tr>
+
+  </tbody>
+  </table>
+{% endblock %}

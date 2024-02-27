@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Lista pustych cen i błędnych płatników{% endblock %}
+
+{% block content %}
+
+
+<h2>Puste ceny i płatnicy</h2>
+    <table class="table">
+        <tbody>
+            {% for row in object_list %}
+            <tr>
+                <td class="col-md-2" ><strong>{{ row.serwer__nazwa }}</strong></td>
+                <td class="col-md-10">{{ row.text }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+
+
+{% endblock %}

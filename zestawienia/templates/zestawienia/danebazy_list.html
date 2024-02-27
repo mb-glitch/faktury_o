@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Lista serwerów i płatników{% endblock %}
+
+{% block content %}
+
+<div class="col-md-6">
+<h2>Serwery</h2>
+<ul class="list-unstyled">
+    <p>Wybrano zakres dat od {{data_start|date:"SHORT_DATETIME_FORMAT"}} do {{data_koniec|date:"SHORT_DATETIME_FORMAT"}}</p>
+{% for laboratorium in laboratoria %}
+<li><a href=baza/{{ laboratorium.nazwa }}>{{ laboratorium.nazwa }}</a></li>
+{% empty %}
+    <li>Brak danych dla laboratoriów </li>
+{% endfor %}
+<li><a href="baza/all">wszystkie bazy razem</a></li>
+</ul>
+
+<h2>Płatnicy</h2>
+<ul class="list-unstyled">
+{% for platnik in platnicy %}
+<li><a href={{ platnik.1 }}>{{ platnik.0 }}</a></li>
+{% empty %}
+    <li>Brak danych dla płatników </li>
+{% endfor %}
+
+</ul>
+</div>
+
+
+<div class="col-md-6">
+<h2>Ustawienia</h2>
+<ul class="list-unstyled">
+<li><a href={% url 'zestawienia:usun_sporale' %}>Usuń sporale i attesty z zestawień</a></li>
+<li><a href={% url 'zestawienia:przywroc_sporale' %}>Przywróć sporale i attesty do zestawień</a></li>
+<li><a href={% url 'zestawienia:zostaw_tylko_sporale' %}>Pozostaw na zestawieniach tylko sporale i attesty</a></li>
+<br>
+<li><a href={% url 'zestawienia:usun_badania_zlecone_7_16' %}>Usuń badana zlecone pomiędzy godziną 7 a 16</a></li>
+<li><a href={% url 'zestawienia:usun_badania_zlecone_16_7' %}>Usuń badana zlecone pomiędzy godziną 16 a 7</a></li>
+<br>
+<li><a href={% url 'zestawienia:usun_lekarzy' %}>Usuń lekarzy z zestawień</a></li>
+<li><a href={% url 'zestawienia:przywroc_lekarzy' %}>Przywróć lekarzy do zestawień</a></li>
+<br>
+<li><a href={% url 'zestawienia:przywroc_wszystko' %}>Przywroć wszystkie badania na zestawienia</a></li>
+<br>
+<li><a href={% url 'zestawienia:poprawki' %}>Lista braku cen i błędnych płatników</a></li>
+
+</ul>
+</div>
+
+
+{% endblock %}

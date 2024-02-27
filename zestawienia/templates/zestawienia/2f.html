@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}{{ platnik.nazwa }} 2f{% endblock %}
+
+{% block content %}
+
+
+<h2>Biglo Diagnostyka Laboratoryjna Sp. z o.o.<br>
+Zestawienie badań z podziałem na oddziały.<br>
+okres od {{platnik.data_start|date:"SHORT_DATETIME_FORMAT"}} do {{platnik.data_koniec|date:"SHORT_DATETIME_FORMAT"}}</h2>
+
+<h3>{{ platnik.nazwa }}</h3>
+
+
+{% for oddzial, oddzial_dane  in platnik.oddzialy.items %}
+
+
+<h4><strong>{{ oddzial }}</strong></h4>
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th style="width: 70%">Badania</th>
+      <th class="text-right" style="width: 10%">Ilość</th>
+      <th class="text-right" style="width: 10%">Cena</th>
+      <th class="text-right" style="width: 10%">Wartość</th>
+    </tr>
+  </thead>
+  <tbody>
+{% for badanie in oddzial_dane.badania %}
+<tr>
+  <td>{{ badanie.nazwa_badania }}</td>
+  <td class="text-right">{{ badanie.ilosc }}</td>
+  <td class="text-right">{{ badanie.cena|floatformat:2 }}</td>
+  <td class="text-right">{{ badanie.wartosc|floatformat:2 }}</td>
+  </tr>
+
+
+{% endfor %}
+<tr>
+  <td class="text-right">Razem oddział: </td>
+  <td class="text-right">{{ oddzial_dane.ilosc }}</td>
+  <td class="text-right"></td>
+  <td class="text-right">{{ oddzial_dane.wartosc|floatformat:2 }}</td>
+  </tr>
+
+{% if not forloop.last %}
+  </tbody>
+</table>
+{% else %}
+
+<tr>
+  <td class="text-right"><strong>Razem Płatnik: </strong></td>
+  <td class="text-right">{{ platnik.ilosc }}</td>
+  <td class="text-right"></td>
+  <td class="text-right">{{ platnik.wartosc|floatformat:2 }}</td>
+  </tr>
+
+  </tbody>
+</table>
+{% endif %}
+
+{% endfor %}
+
+
+
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}{{ platnik.nazwa }} 1b{% endblock %}
+
+{% block content %}
+
+
+<h2>Biglo Diagnostyka Laboratoryjna Sp. z o.o.<br>
+Zestawienie nazwisk pacjentów i badań <br>okres od {{platnik.data_start|date:"SHORT_DATETIME_FORMAT"}} do {{platnik.data_koniec|date:"SHORT_DATETIME_FORMAT"}}</h2>
+
+<h3>{{ platnik.nazwa }}</h3>
+
+
+{% for oddzial, oddzial_dane  in platnik.oddzialy.items %}
+  <h4><strong>{{ oddzial }}</strong></h4>
+  {% for lekarz, lekarz_dane in oddzial_dane.lekarze.items %}
+  <h5><strong>{{ lekarz }}</strong></h5>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th style="width: 30%">Pacjent</th>
+          <th style="width: 50%">Badania</th>
+          <th class="text-right" style="width: 10%">Ilość</th>
+          <th class="text-right"style="width: 10%">Wartość</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for zlecenie, zlecenie_dane in lekarz_dane.zlecenia.items %}
+          <tr>
+            <td>
+              {{ zlecenie_dane.nazwisko }}
+              {{ zlecenie_dane.imie }},
+              {% if zlecenie_dane.pesel %}
+                {{ zlecenie_dane.pesel }}
+              {% else %}
+                {% if zlecenie_dane.data_urodzenia %}        
+                  {{ zlecenie_dane.data_urodzenia|date:"SHORT_DATE_FORMAT" }}
+                {% else %}
+                  nie podano
+                {% endif %}
+              {% endif %}
+              <br>
+              zlecone:
+              {{ zlecenie_dane.data_zlecenia|date:"SHORT_DATE_FORMAT" }}, 
+              wykonane:    
+              {{ zlecenie_dane.data_odprawienia|date:"SHORT_DATE_FORMAT" }}
+            </td>
+            <td>
+              {% for badanie in zlecenie_dane.badania %}
+              {{ badanie }}{% if not forloop.last %}, {% endif %}
+              {% endfor %}
+            </td>
+            <td class="text-right">{{ zlecenie_dane.ilosc }}</td>
+            <td class="text-right">{{ zlecenie_dane.wartosc|floatformat:2 }}</td>
+          </tr>
+        
+{% endfor %}
+        <tr>
+          <td class="text-right"></td>
+          <td class="text-right">Razem lekarz: </td>
+          <td class="text-right">{{ lekarz_dane.ilosc }}</td>
+          <td class="text-right">{{ lekarz_dane.wartosc|floatformat:2 }}</td>
+        </tr>
+      </tbody>
+    </table>
+        {% endfor %}
+
+<table class="table">
+  <tbody>
+    <tr>
+      <td style="width: 30%"></td>
+      <td class="text-right" style="width: 50%"><strong>Razem {{ oddzial }}: </strong></td>
+      <td class="text-right" style="width: 10%"><strong>{{ oddzial_dane.ilosc }}</strong></td>
+      <td class="text-right" style="width: 10%"><strong>{{ oddzial_dane.wartosc|floatformat:2 }}</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+{% endfor %}
+<table class="table">
+  <tbody>
+    <tr>
+      <td style="width: 30%"></td>
+      <td class="text-right" style="width: 50%"><strong>Razem Płatnik: </strong></td>
+      <td class="text-right" style="width: 10%"><strong>{{ platnik.ilosc }}</strong></td>
+      <td class="text-right" style="width: 10%"><strong>{{ platnik.wartosc|floatformat:2 }}</strong></td>
+    </tr>
+  </tbody>
+</table>
+
+{% endblock %}

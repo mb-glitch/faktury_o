@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Lista zestawień{% endblock %}
+
+{% block content %}
+
+
+<h2>Zestawienia</h2>
+<h6>{{  platnik  }}</h6>
+<ul class="list-unstyled">
+
+<li><a href={% url 'zestawienia:2fs' platnik%}>Zestawienie 2fs - badania płatnika bez podziału na oddziały</a></li>
+<li><a href={% url 'zestawienia:2f' platnik%}>Zestawienie 2f - badania płatnika z podziałem na oddziały</a></li>
+<li><a href={% url 'zestawienia:1b' platnik%}>Zestawienie 1b - nazwiska pacjentów płatnika z podziałem oddziały i lekarzy</a></li>
+
+</ul>
+
+
+{% endblock %}
